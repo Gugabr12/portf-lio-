@@ -401,6 +401,7 @@
       max-width: 680px;
       margin: 0 auto var(--space-lg);
       line-height: 1.5;
+      text-wrap: balance;
     }
 
     .hero__ctas {
@@ -501,6 +502,7 @@
       font-weight: var(--fw-regular);
       line-height: 1.1;
       letter-spacing: -0.025em;
+      text-wrap: balance;
     }
 
     .section-header h2 em {
@@ -1059,6 +1061,7 @@
       line-height: 1.08;
       letter-spacing: -0.03em;
       margin-bottom: var(--space-sm);
+      text-wrap: balance;
     }
 
     .cta-section h2 em {
@@ -1243,11 +1246,26 @@
       .stat-pill {
         margin-left: 0;
         margin-bottom: 8px;
+        width: 100%;
       }
 
       .hero__stats {
         flex-direction: column;
         align-items: center;
+        width: 100%;
+      }
+
+      .hero__sub {
+        max-width: 100%;
+        padding: 0 10px;
+      }
+
+      .section-header h2 {
+        font-size: 32px;
+      }
+
+      .section-header p {
+        max-width: 100%;
       }
 
       .portfolio__header-row {
@@ -1261,6 +1279,10 @@
 
       .lang-switcher {
         display: none;
+      }
+
+      .cta-section h2 {
+        font-size: 36px;
       }
     }
 
@@ -1372,8 +1394,7 @@
 
 
         <h1 class="reveal" data-i18n="hero_title">
-          Design que faz o seu<br>
-          negócio <em>vender de verdade.</em>
+          Design que faz o seu negócio <em>vender de verdade.</em>
         </h1>
 
         <p class="hero__sub reveal" data-i18n="hero_sub">
@@ -1409,7 +1430,7 @@
     <div class="container">
       <div class="section-header reveal">
         <div class="eyebrow" data-i18n="nav_servicos">O que eu faço</div>
-        <h2 data-i18n="services_title">Design que trabalha enquanto<br><em>você descansa.</em></h2>
+        <h2 data-i18n="services_title">Design que trabalha enquanto <em>você descansa.</em></h2>
       </div>
 
       <div class="services-grid reveal-stagger">
@@ -1532,7 +1553,7 @@
       <div class="portfolio__header-row reveal">
         <div>
           <div class="eyebrow" data-i18n="nav_trabalhos">Portfólio</div>
-          <h2 data-i18n="portfolio_title">Meus trabalhos<br><em>recentes.</em></h2>
+          <h2 data-i18n="portfolio_title">Meus trabalhos <em>recentes.</em></h2>
         </div>
         <a href="https://www.behance.net/gustavodias1" class="btn btn-ghost" target="_blank" rel="noopener" data-i18n="portfolio_cta">
           Ver todos no Behance →
@@ -1618,7 +1639,7 @@
     <div class="container">
       <div class="section-header reveal">
         <div class="eyebrow" data-i18n="process_eyebrow">Como funciona</div>
-        <h2 data-i18n="process_title">Simples, rápido e<br><em>sem complicação.</em></h2>
+        <h2 data-i18n="process_title">Simples, rápido e <em>sem complicação.</em></h2>
       </div>
 
       <div class="process__steps reveal-stagger">
@@ -1670,7 +1691,7 @@
     <div class="container">
       <div class="cta-section__inner">
         <div class="eyebrow reveal" data-i18n="cta_final_eyebrow">Pronto para começar?</div>
-        <h2 class="reveal" data-i18n="cta_final_title">Bora transformar o seu negócio<br><em>com design de verdade.</em></h2>
+        <h2 class="reveal" data-i18n="cta_final_title">Bora transformar o seu negócio <em>com design de verdade.</em></h2>
         <p class="reveal" data-i18n="cta_final_sub">Me chama agora e a gente começa hoje.</p>
         <a href="https://wa.me/5585997931559" class="btn btn-whatsapp reveal" target="_blank" rel="noopener" data-i18n="cta_final_btn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -1717,14 +1738,14 @@
         nav_trabalhos: "Trabalhos",
         nav_cta: "Falar comigo",
         hero_eyebrow: "Especialista em Design para Negócios",
-        hero_title: "Design que faz o seu<br>negócio vender<br><em>de verdade.</em>",
-        hero_sub: "A maioria dos negócios perde cliente todo dia por causa do<br>visual. Eu resolvo isso com sites, criativos e apresentações<br>que fazem o seu negócio ser levado a sério.",
+        hero_title: "Design que faz o seu negócio vender <em>de verdade.</em>",
+        hero_sub: "A maioria dos negócios perde cliente todo dia por causa do visual. Eu resolvo isso com sites, criativos e apresentações que fazem o seu negócio ser levado a sério.",
         hero_cta_works: "Ver meus trabalhos ↓",
         hero_cta_do: "O que eu faço",
         stat_exp: "<strong>3+</strong> Anos de experiência",
         stat_projects: "<strong>50+</strong> Projetos entregues",
         stat_focus: "<strong>100%</strong> Foco no resultado",
-        services_title: "Design que trabalha enquanto<br><em>você descansa.</em>",
+        services_title: "Design que trabalha enquanto <em>você descansa.</em>",
         service_1_title: "Landing Pages & Sites",
         service_1_desc: "Sites que convertem visita em venda. Rápidos, responsivos e com visual que impressiona do primeiro clique.",
         service_2_title: "Criativos para Redes Sociais",
@@ -1735,14 +1756,14 @@
         service_4_desc: "Propostas, media kits e pitches com um visual profissional que transmite credibilidade na hora de fechar.",
         service_5_title: "Pacote Completo",
         service_5_desc: "Precisa de tudo junto? Bora conversar. Crio soluções sob medida para o seu negócio crescer do jeito certo.",
-        about_title: "Prazer, sou<br><em>Gustavo Dias.</em>",
+        about_title: "Prazer, sou <em>Gustavo Dias.</em>",
         about_p1: "Sou especialista em design para negócios com mais de 3 anos de experiência transformando ideias em projetos visuais que realmente funcionam.",
         about_p2: "Acredito que bom design não é só bonito — é estratégico. Cada pixel tem um propósito: comunicar, engajar e converter. Se o seu negócio precisa de uma presença visual que impressione, você chegou no lugar certo.",
         about_check_1: "Design orientado a resultados",
         about_check_2: "Entrega rápida e comunicação direta",
         about_check_3: "Foco total no crescimento do seu negócio",
         about_cta: "Vamos conversar 💬",
-        portfolio_title: "Meus trabalhos<br><em>recentes.</em>",
+        portfolio_title: "Meus trabalhos <em>recentes.</em>",
         portfolio_cta: "Ver todos no Behance →",
         portfolio_cta_more: "Ver todos →",
         tag_lp: "🌐 Landing Page",
@@ -1752,7 +1773,7 @@
         tag_carousel: "📱 Carrossel",
         tag_insta: "Instagram",
         process_eyebrow: "Como funciona",
-        process_title: "Simples, rápido e<br><em>sem complicação.</em>",
+        process_title: "Simples, rápido e <em>sem complicação.</em>",
         step_1_stage: "Passo 1",
         step_1_title: "Me chama no WhatsApp",
         step_1_desc: "Conta o que você precisa, me manda referências e a gente alinha tudo antes de começar.",
@@ -1763,7 +1784,7 @@
         step_3_title: "Entregue e no ar",
         step_3_desc: "Entrego tudo organizado e pronto para usar. Seu negócio cresce, você foca no que importa.",
         cta_final_eyebrow: "Pronto para começar?",
-        cta_final_title: "Bora transformar o seu negócio<br><em>com design de verdade.</em>",
+        cta_final_title: "Bora transformar o seu negócio <em>com design de verdade.</em>",
         cta_final_sub: "Me chama agora e a gente começa hoje.",
         cta_final_btn: "Falar no WhatsApp",
         footer_copy: "© 2025 Gustavo Dias de Jesus. Todos os direitos reservados."
@@ -1774,14 +1795,14 @@
         nav_trabalhos: "Works",
         nav_cta: "Get in touch",
         hero_eyebrow: "Business Design Specialist",
-        hero_title: "Design that makes your<br>business <em>truly sell.</em>",
-        hero_sub: "Most businesses lose customers every day because of their<br>visuals. I solve this with sites, creatives and presentations<br>that make your business be taken seriously.",
+        hero_title: "Design that makes your business <em>truly sell.</em>",
+        hero_sub: "Most businesses lose customers every day because of their visuals. I solve this with sites, creatives and presentations that make your business be taken seriously.",
         hero_cta_works: "View my works ↓",
         hero_cta_do: "What I do",
         stat_exp: "<strong>3+</strong> Years of experience",
         stat_projects: "<strong>50+</strong> Projects delivered",
         stat_focus: "<strong>100%</strong> Result oriented",
-        services_title: "Design that works while<br><em>you rest.</em>",
+        services_title: "Design that works while <em>you rest.</em>",
         service_1_title: "Landing Pages & Sites",
         service_1_desc: "Sites that convert visits into sales. Fast, responsive, and with visuals that impress from the first click.",
         service_2_title: "Social Media Creatives",
@@ -1792,14 +1813,14 @@
         service_4_desc: "Proposals, media kits, and pitches with a professional look that conveys credibility for closing deals.",
         service_5_title: "Full Package",
         service_5_desc: "Need everything at once? Let's talk. I create tailor-made solutions for your business to grow the right way.",
-        about_title: "Nice to meet you,<br>I'm <em>Gustavo Dias.</em>",
+        about_title: "Nice to meet you, I'm <em>Gustavo Dias.</em>",
         about_p1: "I'm a business design specialist with over 3 years of experience turning ideas into visual projects that actually work.",
         about_p2: "I believe good design isn't just pretty — it's strategic. Every pixel has a purpose: to communicate, engage, and convert.",
         about_check_1: "Result-driven design",
         about_check_2: "Fast delivery & direct communication",
         about_check_3: "Total focus on your business growth",
         about_cta: "Let's talk 💬",
-        portfolio_title: "My recent<br><em>works.</em>",
+        portfolio_title: "My recent <em>works.</em>",
         portfolio_cta: "View all on Behance →",
         portfolio_cta_more: "View all →",
         tag_lp: "🌐 Landing Page",
@@ -1809,7 +1830,7 @@
         tag_carousel: "📱 Carousel",
         tag_insta: "Instagram",
         process_eyebrow: "How it works",
-        process_title: "Simple, fast and<br><em>hassle-free.</em>",
+        process_title: "Simple, fast and <em>hassle-free.</em>",
         step_1_stage: "Step 1",
         step_1_title: "Call me on WhatsApp",
         step_1_desc: "Tell me what you need, send references and we'll align everything before starting.",
@@ -1820,7 +1841,7 @@
         step_3_title: "Delivered and live",
         step_3_desc: "I deliver everything organized and ready to use. Your business grows, you focus on what matters.",
         cta_final_eyebrow: "Ready to start?",
-        cta_final_title: "Let's transform your business<br><em>with real design.</em>",
+        cta_final_title: "Let's transform your business <em>with real design.</em>",
         cta_final_sub: "Call me now and we start today.",
         cta_final_btn: "Talk on WhatsApp",
         footer_copy: "© 2025 Gustavo Dias de Jesus. All rights reserved."
