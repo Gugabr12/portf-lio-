@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin — OGUGADSGN</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --color-bg-primary: #000000;
+      --color-bg-card: #131313;
+      --color-accent: #0055FE;
+      --color-accent-hover: #0044cc;
+      --color-text-primary: #FFFFFF;
+      --color-text-secondary: rgba(255, 255, 255, 0.6);
+      --color-border: rgba(255, 255, 255, 0.12);
+      --radius-md: 8px;
+      --radius-xl: 12px;
+      --radius-pill: 50px;
+      --font-family: "DM Sans", sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    header a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    header a:hover { color: var(--color-text-primary); }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--color-text-secondary);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-bottom: 6px;
+      margin-top: 16px;
+    }
+
+    label:first-of-type { margin-top: 0; }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    input[type="url"],
+    textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 11px 14px;
+      color: var(--color-text-primary);
+      font-family: var(--font-family);
+      font-size: 14px;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    input[type="file"] {
+      width: 100%;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 12px 24px;
+      font-family: var(--font-family);
+      font-weight: 500;
+      font-size: 14px;
+      background: var(--color-accent);
+      color: #fff;
+      transition: background 0.2s ease;
+      margin-top: 20px;
+    }
+
+    .btn:hover { background: var(--color-accent-hover); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+      margin-top: 0;
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+
+    .btn-danger {
+      background: transparent;
+      border: 1px solid rgba(255, 80, 80, 0.4);
+      color: #ff6b6b;
+      margin-top: 0;
+      padding: 6px 14px;
+      font-size: 12px;
+    }
+
+    .btn-danger:hover { background: rgba(255, 80, 80, 0.1); }
+
+    .msg {
+      font-size: 13px;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      display: none;
+    }
+
+    .msg.error { display: block; background: rgba(255, 80, 80, 0.12); color: #ff8080; }
+    .msg.success { display: block; background: rgba(60, 200, 120, 0.12); color: #5fdc9a; }
+
+    .hidden { display: none !important; }
+
+    .post-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .post-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+    }
+
+    .post-item img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .post-item__info { flex: 1; min-width: 0; }
+    .post-item__title { font-size: 14px; font-weight: 500; }
+    .post-item__title, .post-item__meta {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .post-item__meta { font-size: 12px; color: var(--color-text-secondary); }
+    .post-item__actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+    .cover-preview {
+      margin-top: 10px;
+      width: 140px;
+      height: 90px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      display: none;
+    }
+    .cover-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cover-preview.show { display: block; }
+
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .thumb {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .thumb__actions {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 4px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .thumb:hover .thumb__actions { opacity: 1; }
+
+    .thumb__move { display: flex; gap: 2px; }
+
+    .thumb__btn {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .thumb__btn:hover { background: rgba(0, 0, 0, 0.9); }
+    .thumb__btn--remove { background: rgba(220, 50, 50, 0.85); }
+    .thumb__btn--remove:hover { background: rgba(220, 50, 50, 1); }
+
+    .form-hint { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <span style="font-weight:700; letter-spacing:-0.04em;">OGUGADSGN</span>
+      <a href="index.html">← Voltar pro site</a>
+    </header>
+
+    <!-- ===== LOGIN ===== -->
+    <div id="loginView">
+      <h1>Entrar</h1>
+      <p class="subtitle">Área restrita — acesso do administrador.</p>
+      <div class="card">
+        <form id="loginForm">
+          <label for="loginEmail">E-mail</label>
+          <input type="email" id="loginEmail" required autocomplete="username">
+          <label for="loginPassword">Senha</label>
+          <input type="password" id="loginPassword" required autocomplete="current-password">
+          <button type="submit" class="btn" id="loginBtn">Entrar</button>
+          <div class="msg" id="loginMsg"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== PAINEL ===== -->
+    <div id="panelView" class="hidden">
+      <header style="margin-bottom: 8px;">
+        <h1 style="margin-bottom:0;" id="formTitle">Novo post</h1>
+        <button class="btn btn-ghost" id="logoutBtn">Sair</button>
+      </header>
+      <p class="subtitle" id="formSubtitle">Adiciona um card novo na grade de portfólio do site.</p>
+
+      <div class="card">
+        <form id="postForm">
+          <label for="postTitle">Título</label>
+          <input type="text" id="postTitle" required placeholder="Ex: Landing Page Studio X">
+
+          <label for="postText">Texto (aparece completo na página do projeto)</label>
+          <textarea id="postText" placeholder="Conte sobre o projeto"></textarea>
+
+          <label for="postTags">Tags (separadas por vírgula)</label>
+          <input type="text" id="postTags" placeholder="Ex: Social Media, Design">
+
+          <label for="postClient">Nome do cliente</label>
+          <input type="text" id="postClient" placeholder="Ex: Gustavo Dias">
+
+          <label for="postDate">Data do projeto</label>
+          <input type="text" id="postDate" placeholder="Ex: Julho 2026">
+
+          <label for="postCoverImage">Imagem de capa</label>
+          <input type="file" id="postCoverImage" accept="image/*">
+          <div class="form-hint">Aparece no card da grade e no topo da página do projeto.</div>
+          <div class="cover-preview" id="coverPreview"><img id="coverPreviewImg" alt=""></div>
+
+          <label for="postBodyImages">Imagens do corpo</label>
+          <input type="file" id="postBodyImages" accept="image/*" multiple>
+          <div class="form-hint">Pode adicionar quantas quiser. Passe o mouse numa imagem pra mover a ordem ou remover.</div>
+          <div class="thumb-grid" id="bodyImagesGrid"></div>
+
+          <button type="submit" class="btn" id="postBtn">Publicar</button>
+          <button type="button" class="btn btn-ghost" id="cancelEditBtn" style="margin-top:20px; margin-left:10px; display:none;">Cancelar edição</button>
+          <div class="msg" id="postMsg"></div>
+        </form>
+      </div>
+
+      <h1 style="font-size:20px; margin-bottom:16px;">Posts publicados</h1>
+      <div class="post-list" id="postList"></div>
+    </div>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const loginView = document.getElementById('loginView');
+    const panelView = document.getElementById('panelView');
+    const loginForm = document.getElementById('loginForm');
+    const loginMsg = document.getElementById('loginMsg');
+    const loginBtn = document.getElementById('loginBtn');
+    const postForm = document.getElementById('postForm');
+    const postMsg = document.getElementById('postMsg');
+    const postBtn = document.getElementById('postBtn');
+    const postList = document.getElementById('postList');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const formTitle = document.getElementById('formTitle');
+    const formSubtitle = document.getElementById('formSubtitle');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const postCoverImage = document.getElementById('postCoverImage');
+    const coverPreview = document.getElementById('coverPreview');
+    const coverPreviewImg = document.getElementById('coverPreviewImg');
+    const postBodyImages = document.getElementById('postBodyImages');
+    const bodyImagesGrid = document.getElementById('bodyImagesGrid');
+
+    function showMsg(el, text, type) {
+      el.textContent = text;
+      el.className = 'msg ' + type;
+    }
+
+    function clearMsg(el) {
+      el.textContent = '';
+      el.className = 'msg';
+    }
+
+    // ===== Estado do formulário (novo post ou edição) =====
+    let editingId = null;
+    let editingExistingCoverUrl = null;
+    let coverFile = null;
+    let bodyItems = []; // { uid, kind: 'existing'|'new', url?, file?, previewUrl }
+    let uidCounter = 0;
+
+    function setCoverPreview(url) {
+      if (url) {
+        coverPreviewImg.src = url;
+        coverPreview.classList.add('show');
+      } else {
+        coverPreviewImg.src = '';
+        coverPreview.classList.remove('show');
+      }
+    }
+
+    postCoverImage.addEventListener('change', function () {
+      const file = postCoverImage.files[0];
+      if (!file) return;
+      coverFile = file;
+      setCoverPreview(URL.createObjectURL(file));
+    });
+
+    postBodyImages.addEventListener('change', function () {
+      Array.from(postBodyImages.files).forEach(function (file) {
+        bodyItems.push({
+          uid: ++uidCounter,
+          kind: 'new',
+          file: file,
+          previewUrl: URL.createObjectURL(file)
+        });
+      });
+      postBodyImages.value = '';
+      renderBodyImages();
+    });
+
+    function renderBodyImages() {
+      bodyImagesGrid.innerHTML = '';
+      bodyItems.forEach(function (item, index) {
+        const thumb = document.createElement('div');
+        thumb.className = 'thumb';
+
+        const img = document.createElement('img');
+        img.src = item.kind === 'existing' ? item.url : item.previewUrl;
+        thumb.appendChild(img);
+
+        const actions = document.createElement('div');
+        actions.className = 'thumb__actions';
+
+        const move = document.createElement('div');
+        move.className = 'thumb__move';
+
+        const upBtn = document.createElement('button');
+        upBtn.type = 'button';
+        upBtn.className = 'thumb__btn';
+        upBtn.textContent = '↑';
+        upBtn.disabled = index === 0;
+        upBtn.addEventListener('click', function () { moveBodyItem(index, -1); });
+
+        const downBtn = document.createElement('button');
+        downBtn.type = 'button';
+        downBtn.className = 'thumb__btn';
+        downBtn.textContent = '↓';
+        downBtn.disabled = index === bodyItems.length - 1;
+        downBtn.addEventListener('click', function () { moveBodyItem(index, 1); });
+
+        move.appendChild(upBtn);
+        move.appendChild(downBtn);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'thumb__btn thumb__btn--remove';
+        removeBtn.textContent = '×';
+        removeBtn.addEventListener('click', function () { removeBodyItem(item.uid); });
+
+        actions.appendChild(move);
+        actions.appendChild(removeBtn);
+        thumb.appendChild(actions);
+        bodyImagesGrid.appendChild(thumb);
+      });
+    }
+
+    function moveBodyItem(index, dir) {
+      const target = index + dir;
+      if (target < 0 || target >= bodyItems.length) return;
+      const tmp = bodyItems[index];
+      bodyItems[index] = bodyItems[target];
+      bodyItems[target] = tmp;
+      renderBodyImages();
+    }
+
+    function removeBodyItem(uid) {
+      const item = bodyItems.find(function (i) { return i.uid === uid; });
+      if (item && item.kind === 'new') URL.revokeObjectURL(item.previewUrl);
+      bodyItems = bodyItems.filter(function (i) { return i.uid !== uid; });
+      renderBodyImages();
+    }
+
+    function resetForm() {
+      editingId = null;
+      editingExistingCoverUrl = null;
+      coverFile = null;
+      bodyItems.forEach(function (i) { if (i.kind === 'new') URL.revokeObjectURL(i.previewUrl); });
+      bodyItems = [];
+      postForm.reset();
+      setCoverPreview(null);
+      renderBodyImages();
+      formTitle.textContent = 'Novo post';
+      formSubtitle.textContent = 'Adiciona um card novo na grade de portfólio do site.';
+      postBtn.textContent = 'Publicar';
+      cancelEditBtn.style.display = 'none';
+    }
+
+    function startEdit(post) {
+      editingId = post.id;
+      editingExistingCoverUrl = post.image_url;
+      coverFile = null;
+      bodyItems.forEach(function (i) { if (i.kind === 'new') URL.revokeObjectURL(i.previewUrl); });
+      bodyItems = (post.body_images || []).map(function (url) {
+        return { uid: ++uidCounter, kind: 'existing', url: url };
+      });
+
+      document.getElementById('postTitle').value = post.title || '';
+      document.getElementById('postText').value = post.text || '';
+      document.getElementById('postTags').value = (post.tags || []).join(', ');
+      document.getElementById('postClient').value = post.client || '';
+      document.getElementById('postDate').value = post.project_date || '';
+      postCoverImage.value = '';
+      setCoverPreview(post.image_url);
+      renderBodyImages();
+
+      formTitle.textContent = 'Editar post';
+      formSubtitle.textContent = 'Alterando "' + post.title + '".';
+      postBtn.textContent = 'Salvar alterações';
+      cancelEditBtn.style.display = 'inline-flex';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    cancelEditBtn.addEventListener('click', function () {
+      clearMsg(postMsg);
+      resetForm();
+    });
+
+    // Redimensiona (máx. 1920px) e comprime pra webp antes de subir, pra não pesar o site.
+    // Se der qualquer problema (formato não suportado, etc.) usa o arquivo original.
+    async function compressImage(file) {
+      if (!file.type.startsWith('image/') || file.type === 'image/gif' || file.type === 'image/svg+xml') {
+        return file;
+      }
+      try {
+        const bitmap = await createImageBitmap(file);
+        const maxDim = 1920;
+        const scale = Math.min(1, maxDim / Math.max(bitmap.width, bitmap.height));
+        const width = Math.round(bitmap.width * scale);
+        const height = Math.round(bitmap.height * scale);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(bitmap, 0, 0, width, height);
+
+        const blob = await new Promise(function (resolve) {
+          canvas.toBlob(resolve, 'image/webp', 0.82);
+        });
+
+        if (!blob || blob.size >= file.size) return file;
+        return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.webp', { type: 'image/webp' });
+      } catch (e) {
+        return file;
+      }
+    }
+
+    async function uploadImage(file) {
+      const compressed = await compressImage(file);
+      const ext = compressed.name.split('.').pop();
+      const path = Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
+      const { error: uploadError } = await sb.storage.from('portfolio-images').upload(path, compressed);
+      if (uploadError) throw uploadError;
+      const { data: publicUrlData } = sb.storage.from('portfolio-images').getPublicUrl(path);
+      return publicUrlData.publicUrl;
+    }
+
+    async function refreshView() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        loginView.classList.add('hidden');
+        panelView.classList.remove('hidden');
+        loadPosts();
+      } else {
+        loginView.classList.remove('hidden');
+        panelView.classList.add('hidden');
+      }
+    }
+
+    loginForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      clearMsg(loginMsg);
+      loginBtn.disabled = true;
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      loginBtn.disabled = false;
+
+      if (error) {
+        showMsg(loginMsg, 'E-mail ou senha incorretos.', 'error');
+        return;
+      }
+      refreshView();
+    });
+
+    logoutBtn.addEventListener('click', async function () {
+      await sb.auth.signOut();
+      refreshView();
+    });
+
+    postForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      clearMsg(postMsg);
+      postBtn.disabled = true;
+
+      try {
+        const title = document.getElementById('postTitle').value.trim();
+        const text = document.getElementById('postText').value.trim();
+        const tags = document.getElementById('postTags').value
+          .split(',')
+          .map(function (t) { return t.trim(); })
+          .filter(Boolean);
+        const client = document.getElementById('postClient').value.trim();
+        const projectDate = document.getElementById('postDate').value.trim();
+
+        if (!editingId && !coverFile) throw new Error('Selecione uma imagem de capa.');
+
+        const coverUrl = coverFile ? await uploadImage(coverFile) : editingExistingCoverUrl;
+
+        const bodyImageUrls = [];
+        for (const item of bodyItems) {
+          bodyImageUrls.push(item.kind === 'existing' ? item.url : await uploadImage(item.file));
+        }
+
+        const payload = {
+          title: title,
+          text: text,
+          tags: tags,
+          client: client || null,
+          project_date: projectDate || null,
+          image_url: coverUrl,
+          body_images: bodyImageUrls
+        };
+
+        if (!editingId) {
+          const { data: minData } = await sb
+            .from('posts')
+            .select('sort_order')
+            .order('sort_order', { ascending: true, nullsFirst: false })
+            .limit(1);
+          const min = minData && minData.length && typeof minData[0].sort_order === 'number' ? minData[0].sort_order : 0;
+          payload.sort_order = min - 1;
+        }
+
+        if (editingId) {
+          const { error: updateError } = await sb.from('posts').update(payload).eq('id', editingId);
+          if (updateError) throw updateError;
+          showMsg(postMsg, 'Post atualizado!', 'success');
+        } else {
+          const { error: insertError } = await sb.from('posts').insert(payload);
+          if (insertError) throw insertError;
+          showMsg(postMsg, 'Post publicado!', 'success');
+        }
+
+        resetForm();
+        loadPosts();
+      } catch (err) {
+        showMsg(postMsg, 'Erro: ' + (err.message || err), 'error');
+      } finally {
+        postBtn.disabled = false;
+      }
+    });
+
+    let currentPosts = [];
+
+    async function movePost(index, dir) {
+      const target = index + dir;
+      if (target < 0 || target >= currentPosts.length) return;
+      const a = currentPosts[index];
+      const b = currentPosts[target];
+      const aOrder = a.sort_order;
+      const bOrder = b.sort_order;
+      const { error: e1 } = await sb.from('posts').update({ sort_order: bOrder }).eq('id', a.id);
+      const { error: e2 } = await sb.from('posts').update({ sort_order: aOrder }).eq('id', b.id);
+      if (e1 || e2) {
+        alert('Erro ao reordenar: ' + ((e1 || e2).message));
+        return;
+      }
+      loadPosts();
+    }
+
+    async function loadPosts() {
+      postList.innerHTML = 'Carregando...';
+      const { data, error } = await sb
+        .from('posts')
+        .select('*')
+        .order('sort_order', { ascending: true, nullsFirst: false })
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        postList.innerHTML = 'Erro ao carregar posts.';
+        return;
+      }
+
+      currentPosts = data;
+
+      if (!data.length) {
+        postList.innerHTML = '<p class="subtitle">Nenhum post ainda.</p>';
+        return;
+      }
+
+      postList.innerHTML = '';
+      data.forEach(function (post, index) {
+        const item = document.createElement('div');
+        item.className = 'post-item';
+        item.innerHTML =
+          '<img src="' + post.image_url + '" alt="">' +
+          '<div class="post-item__info">' +
+            '<div class="post-item__title">' + post.title + '</div>' +
+            '<div class="post-item__meta">' + (post.tags || []).join(', ') + '</div>' +
+          '</div>';
+
+        const actions = document.createElement('div');
+        actions.className = 'post-item__actions';
+
+        const upBtn = document.createElement('button');
+        upBtn.className = 'btn btn-ghost';
+        upBtn.textContent = '↑';
+        upBtn.disabled = index === 0;
+        upBtn.addEventListener('click', function () { movePost(index, -1); });
+
+        const downBtn = document.createElement('button');
+        downBtn.className = 'btn btn-ghost';
+        downBtn.textContent = '↓';
+        downBtn.disabled = index === currentPosts.length - 1;
+        downBtn.addEventListener('click', function () { movePost(index, 1); });
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn btn-ghost';
+        editBtn.textContent = 'Editar';
+        editBtn.addEventListener('click', function () {
+          clearMsg(postMsg);
+          startEdit(post);
+        });
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'btn btn-danger';
+        delBtn.textContent = 'Excluir';
+        delBtn.addEventListener('click', async function () {
+          if (!confirm('Excluir "' + post.title + '"?')) return;
+          const { error } = await sb.from('posts').delete().eq('id', post.id);
+          if (error) {
+            alert('Erro ao excluir: ' + error.message);
+            return;
+          }
+          if (editingId === post.id) resetForm();
+          loadPosts();
+        });
+
+        actions.appendChild(upBtn);
+        actions.appendChild(downBtn);
+        actions.appendChild(editBtn);
+        actions.appendChild(delBtn);
+        item.appendChild(actions);
+        postList.appendChild(item);
+      });
+    }
+
+    refreshView();
+  </script>
+</body>
+
+</html>

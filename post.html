@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto — OGUGADSGN</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* =============================================
+     DESIGN TOKENS — mesmos do index.html
+    ============================================= */
+    :root {
+      --color-bg-primary: #000000;
+      --color-bg-secondary: #080808;
+      --color-bg-card: #131313;
+      --color-accent: #0055FE;
+      --color-accent-hover: #0044cc;
+      --color-text-primary: #FFFFFF;
+      --color-text-secondary: rgba(255, 255, 255, 0.6);
+      --color-text-muted: rgba(255, 255, 255, 0.2);
+      --color-border: rgba(255, 255, 255, 0.12);
+      --color-border-subtle: rgba(255, 255, 255, 0.06);
+      --shadow-glow-lg: rgba(0, 85, 255, 0.5) 0px 8px 40px 0px, rgba(255, 255, 255, 0) 0px 0px 10px 1px inset, rgba(0, 85, 255, 0.12) 0px 0px 0px 1px;
+      --shadow-glow-md: rgba(0, 85, 255, 0.25) 0px 5px 25px 0px, rgba(255, 255, 255, 0.08) 0px 10px 10px -1px inset;
+      --font-family: "DM Sans", sans-serif;
+      --fs-xs: 12px;
+      --fs-sm: 14px;
+      --fs-base: 16px;
+      --fs-md: 18px;
+      --fw-regular: 400;
+      --fw-medium: 500;
+      --fw-semibold: 600;
+      --fw-bold: 700;
+      --radius-pill: 50px;
+      --radius-xl: 12px;
+      --radius-3xl: 20px;
+      --radius-4xl: 24px;
+      --radius-5xl: 30px;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 40px;
+      --space-xl: 60px;
+      --space-2xl: 100px;
+      --space-3xl: 120px;
+      --transition-base: all 0.2s ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      font-size: var(--fs-base);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    a { color: inherit; }
+
+    /* ===== Navbar (versão enxuta da home) ===== */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: calc(100% - 48px);
+      max-width: 1100px;
+    }
+
+    .navbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(8, 8, 8, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+    }
+
+    .navbar__logo {
+      font-size: var(--fs-base);
+      font-weight: var(--fw-bold);
+      text-decoration: none;
+      letter-spacing: -0.04em;
+    }
+
+    .navbar__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: var(--fs-sm);
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      transition: var(--transition-base);
+      white-space: nowrap;
+    }
+
+    .navbar__back:hover { color: var(--color-text-primary); }
+
+    .navbar__right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+
+    /* Language Switcher */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      flex-shrink: 0;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--color-text-secondary);
+      font-size: 11px;
+      font-weight: var(--fw-bold);
+      cursor: pointer;
+      transition: var(--transition-base);
+      padding: 4px 6px;
+      letter-spacing: 0.05em;
+    }
+
+    .lang-btn:hover { color: var(--color-text-primary); }
+
+    .lang-btn.active {
+      color: var(--color-accent);
+      background: rgba(0, 85, 254, 0.1);
+      border-radius: 4px;
+    }
+
+    /* ===== Mobile: tudo compacto na mesma linha, sem menu cheio ===== */
+    @media (max-width: 480px) {
+      .navbar__inner { padding: 10px 16px; }
+      .navbar__back-text { display: none; }
+      .lang-switcher { gap: 6px; padding: 3px 8px; }
+      .lang-btn { padding: 3px 4px; font-size: 10px; }
+      .navbar__right { gap: 10px; }
+    }
+
+    /* ===== Hero image ===== */
+    .post-hero {
+      padding: 160px 0 var(--space-xl);
+    }
+
+    .post-hero__media {
+      border-radius: var(--radius-5xl);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-glow-md);
+      aspect-ratio: 16/9;
+      background: var(--color-bg-card);
+    }
+
+    .post-hero__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ===== Ficha do projeto ===== */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      font-size: var(--fs-xs);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-md);
+    }
+
+    .eyebrow::before { content: '•'; color: var(--color-accent); }
+
+    .post-ficha { padding: var(--space-xl) 0 var(--space-2xl); }
+
+    .post-ficha__grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--space-xl);
+    }
+
+    .post-ficha__title {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 460;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-md);
+    }
+
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .post-tags__tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      font-weight: var(--fw-medium);
+    }
+
+    .post-ficha__text {
+      font-size: clamp(15px, 1.1vw, 17px);
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      margin-bottom: var(--space-lg);
+      max-width: 640px;
+    }
+
+    .post-meta {
+      display: flex;
+      gap: var(--space-xl);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-lg);
+    }
+
+    .post-meta__item .label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      font-weight: var(--fw-semibold);
+      margin-bottom: 6px;
+    }
+
+    .post-meta__item .value {
+      font-size: var(--fs-sm);
+      color: var(--color-text-primary);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition-base);
+      font-family: var(--font-family);
+      font-weight: var(--fw-medium);
+      border: none;
+      font-size: var(--fs-sm);
+      border-radius: var(--radius-pill);
+    }
+
+    .btn-primary {
+      background: var(--color-accent);
+      color: #fff;
+      padding: 13px 26px;
+      box-shadow: var(--shadow-glow-md);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-accent-hover);
+      box-shadow: var(--shadow-glow-lg);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Estados de carregamento ===== */
+    .hidden { display: none !important; }
+
+    #loadingState, #notFoundState {
+      padding: 200px 0 var(--space-2xl);
+      text-align: center;
+      color: var(--color-text-secondary);
+    }
+
+    #notFoundState a { color: var(--color-accent); text-decoration: none; }
+
+    /* ===== CTA final (idêntico ao da home) ===== */
+    .cta-section {
+      padding: var(--space-3xl) 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--color-border-subtle);
+    }
+
+    .cta-section__bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0, 85, 254, 0.12), transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section__inner {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: var(--fw-regular);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .cta-section h2 em { color: var(--color-text-secondary); font-style: italic; }
+
+    .cta-section p {
+      font-size: var(--fs-base);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: #fff;
+      border-radius: var(--radius-pill);
+      padding: 15px 32px;
+      font-size: var(--fs-base);
+      font-weight: var(--fw-semibold);
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: var(--transition-base);
+    }
+
+    .btn-whatsapp:hover {
+      background: #1ebe5a;
+      box-shadow: 0 6px 30px rgba(37, 211, 102, 0.45);
+      transform: translateY(-2px);
+    }
+
+    footer {
+      padding: var(--space-lg) 0;
+      border-top: 1px solid var(--color-border-subtle);
+    }
+
+    footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .footer__logo {
+      font-size: var(--fs-base);
+      font-weight: var(--fw-bold);
+      text-decoration: none;
+      letter-spacing: -0.04em;
+    }
+
+    .footer__copy { font-size: var(--fs-xs); color: var(--color-text-muted); }
+
+    @media (max-width: 700px) {
+      .post-ficha__grid { grid-template-columns: 1fr; gap: var(--space-md); }
+      .post-hero { padding-top: 120px; }
+    }
+
+    /* ===== Galeria de imagens do corpo ===== */
+    .post-gallery { padding: 0 0 var(--space-2xl); }
+
+    .post-gallery__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .post-gallery__grid img {
+      width: 100%;
+      display: block;
+      border-radius: var(--radius-3xl);
+      border: 1px solid var(--color-border);
+    }
+
+    @media (max-width: 700px) {
+      .post-gallery__grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== Clique pra dar zoom ===== */
+    .post-hero__media img,
+    .post-gallery__grid img {
+      cursor: zoom-in;
+      transition: filter 0.2s ease;
+    }
+
+    .post-hero__media img:hover,
+    .post-gallery__grid img:hover {
+      filter: brightness(1.05);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .lightbox.show { opacity: 1; pointer-events: auto; }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: var(--radius-xl);
+      cursor: zoom-out;
+      box-shadow: var(--shadow-glow-lg);
+    }
+
+    .lightbox__close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--color-border);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      transition: var(--transition-base);
+    }
+
+    .lightbox__close:hover { background: rgba(255, 255, 255, 0.16); }
+
+    @media (max-width: 700px) {
+      .lightbox { padding: 16px; }
+      .lightbox__close { top: 12px; right: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">OGUGADSGN</a>
+      <div class="navbar__right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="pt">PT</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <a href="index.html#portfolio" class="navbar__back">
+          <span aria-hidden="true">←</span>
+          <span class="navbar__back-text" data-i18n="back_text">Voltar pro portfólio</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div id="loadingState" data-i18n="loading">Carregando...</div>
+
+  <div id="notFoundState" class="hidden container" style="text-align:center; padding-top:200px;">
+    <span data-i18n="not_found">Projeto não encontrado.</span> <a href="index.html#portfolio" data-i18n="back_link_2">Voltar pro portfólio</a>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" id="lightboxClose">✕</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <div id="postContent" class="hidden">
+
+    <section class="post-hero">
+      <div class="container">
+        <div class="post-hero__media">
+          <img id="postImage" src="" alt="">
+        </div>
+      </div>
+    </section>
+
+    <section class="post-ficha">
+      <div class="container">
+        <div class="post-ficha__grid">
+          <div>
+            <div class="eyebrow" data-i18n="ficha_eyebrow">Ficha do projeto</div>
+            <div class="post-tags" id="postTags"></div>
+          </div>
+          <div>
+            <h1 class="post-ficha__title" id="postTitle"></h1>
+            <p class="post-ficha__text" id="postText"></p>
+            <div class="post-meta">
+              <div class="post-meta__item hidden" id="postClientItem">
+                <span class="label" data-i18n="label_client">Cliente</span>
+                <span class="value" id="postClient"></span>
+              </div>
+              <div class="post-meta__item hidden" id="postDateItem">
+                <span class="label" data-i18n="label_date">Data</span>
+                <span class="value" id="postDate"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="post-gallery hidden" id="postGallery">
+      <div class="container">
+        <div class="post-gallery__grid" id="postGalleryGrid"></div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-section__bg"></div>
+      <div class="container">
+        <div class="cta-section__inner">
+          <div class="eyebrow" data-i18n="cta_eyebrow">Gostou desse projeto?</div>
+          <h2 data-i18n="cta_title">Bora transformar o seu negócio <em>com design de verdade.</em></h2>
+          <p data-i18n="cta_sub">Me chama agora e a gente começa hoje.</p>
+          <a href="https://wa.me/5585997931559" class="btn-whatsapp" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            <span data-i18n="cta_btn">Falar no WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="container">
+      <a href="index.html" class="footer__logo">OGUGADSGN</a>
+      <p class="footer__copy" data-i18n="footer_copy">© 2025 Gustavo Dias de Jesus. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    /* =============================================
+     I18N — textos fixos da página (mesmo padrão do index.html)
+    ============================================= */
+    const translations = {
+      pt: {
+        back_text: "Voltar pro portfólio",
+        back_link_2: "Voltar pro portfólio",
+        loading: "Carregando...",
+        not_found: "Projeto não encontrado.",
+        ficha_eyebrow: "Ficha do projeto",
+        label_client: "Cliente",
+        label_date: "Data",
+        cta_eyebrow: "Gostou desse projeto?",
+        cta_title: "Bora transformar o seu negócio <em>com design de verdade.</em>",
+        cta_sub: "Me chama agora e a gente começa hoje.",
+        cta_btn: "Falar no WhatsApp",
+        footer_copy: "© 2025 Gustavo Dias de Jesus. Todos os direitos reservados."
+      },
+      en: {
+        back_text: "Back to portfolio",
+        back_link_2: "Back to portfolio",
+        loading: "Loading...",
+        not_found: "Project not found.",
+        ficha_eyebrow: "Project details",
+        label_client: "Client",
+        label_date: "Date",
+        cta_eyebrow: "Liked this project?",
+        cta_title: "Let's transform your business <em>with real design.</em>",
+        cta_sub: "Call me now and we start today.",
+        cta_btn: "Talk on WhatsApp",
+        footer_copy: "© 2025 Gustavo Dias de Jesus. All rights reserved."
+      }
+    };
+
+    function updateLanguage(lang) {
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) el.innerHTML = translations[lang][key];
+      });
+      document.querySelectorAll(".lang-btn").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      });
+      localStorage.setItem("portfolio-lang", lang);
+    }
+
+    updateLanguage(localStorage.getItem("portfolio-lang") || "pt");
+
+    document.querySelectorAll(".lang-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        updateLanguage(btn.getAttribute("data-lang"));
+      });
+    });
+
+    /* =============================================
+     LIGHTBOX — clique numa imagem pra ver em tela cheia
+    ============================================= */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    function openLightbox(src, alt) {
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || '';
+      lightbox.classList.add('show');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('show');
+    }
+
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox || e.target === lightboxImg) closeLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    (async function () {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const loadingState = document.getElementById('loadingState');
+      const notFoundState = document.getElementById('notFoundState');
+      const postContent = document.getElementById('postContent');
+
+      function showNotFound() {
+        loadingState.classList.add('hidden');
+        notFoundState.classList.remove('hidden');
+      }
+
+      if (!id || !window.supabase || !SUPABASE_URL || SUPABASE_URL.indexOf('COLE_AQUI') === 0) {
+        showNotFound();
+        return;
+      }
+
+      const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const { data: post, error } = await sb
+        .from('posts')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle();
+
+      if (error || !post) {
+        showNotFound();
+        return;
+      }
+
+      document.title = post.title + ' — OGUGADSGN';
+      document.getElementById('postImage').src = post.image_url;
+      document.getElementById('postImage').alt = post.title;
+      document.getElementById('postImage').addEventListener('click', function () {
+        openLightbox(post.image_url, post.title);
+      });
+      document.getElementById('postTitle').textContent = post.title;
+      document.getElementById('postText').textContent = post.text || '';
+
+      if (post.client) {
+        document.getElementById('postClient').textContent = post.client;
+        document.getElementById('postClientItem').classList.remove('hidden');
+      }
+      if (post.project_date) {
+        document.getElementById('postDate').textContent = post.project_date;
+        document.getElementById('postDateItem').classList.remove('hidden');
+      }
+
+      const tagsEl = document.getElementById('postTags');
+      (post.tags || []).forEach(function (tag) {
+        const span = document.createElement('span');
+        span.className = 'post-tags__tag';
+        span.textContent = tag;
+        tagsEl.appendChild(span);
+      });
+
+      if (post.body_images && post.body_images.length) {
+        const gallery = document.getElementById('postGallery');
+        const grid = document.getElementById('postGalleryGrid');
+        post.body_images.forEach(function (url) {
+          const img = document.createElement('img');
+          img.src = url;
+          img.alt = post.title;
+          img.loading = 'lazy';
+          img.addEventListener('click', function () { openLightbox(url, post.title); });
+          grid.appendChild(img);
+        });
+        gallery.classList.remove('hidden');
+      }
+
+      loadingState.classList.add('hidden');
+      postContent.classList.remove('hidden');
+    })();
+  </script>
+</body>
+
+</html>
