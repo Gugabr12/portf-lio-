@@ -645,11 +645,17 @@
     });
 
     (async function () {
-      // /nome-do-projeto é reescrito pelo .htaccess pra post.html?slug=nome-do-projeto.
+      // /nome-do-projeto é reescrito PELO SERVIDOR pra servir post.html, mas isso é
+      // invisível pro JS — a barra de endereço (e window.location) continua mostrando
+      // só o caminho limpo, sem query string. Por isso o slug vem do pathname mesmo.
       // Link antigo (post.html?id=uuid) continua funcionando pra não quebrar o que já foi compartilhado.
       const params = new URLSearchParams(window.location.search);
-      const slug = params.get('slug');
       const id = params.get('id');
+      let slug = params.get('slug');
+      if (!slug && !id) {
+        const path = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+        if (path && path.toLowerCase() !== 'post.html') slug = path;
+      }
       const loadingState = document.getElementById('loadingState');
       const notFoundState = document.getElementById('notFoundState');
       const postContent = document.getElementById('postContent');
