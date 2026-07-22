@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projeto — OGUGADSGN</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="robots" content="index, follow">
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
     rel="stylesheet">
@@ -469,13 +471,13 @@
 
   <nav class="navbar">
     <div class="navbar__inner">
-      <a href="index.html" class="navbar__logo">OGUGADSGN</a>
+      <a href="/" class="navbar__logo">OGUGADSGN</a>
       <div class="navbar__right">
         <div class="lang-switcher">
           <button class="lang-btn active" data-lang="pt">PT</button>
           <button class="lang-btn" data-lang="en">EN</button>
         </div>
-        <a href="index.html#portfolio" class="navbar__back">
+        <a href="/#portfolio" class="navbar__back">
           <span aria-hidden="true">←</span>
           <span class="navbar__back-text" data-i18n="back_text">Voltar pro portfólio</span>
         </a>
@@ -486,7 +488,7 @@
   <div id="loadingState" data-i18n="loading">Carregando...</div>
 
   <div id="notFoundState" class="hidden container" style="text-align:center; padding-top:200px;">
-    <span data-i18n="not_found">Projeto não encontrado.</span> <a href="index.html#portfolio" data-i18n="back_link_2">Voltar pro portfólio</a>
+    <span data-i18n="not_found">Projeto não encontrado.</span> <a href="/#portfolio" data-i18n="back_link_2">Voltar pro portfólio</a>
   </div>
 
   <div class="lightbox" id="lightbox">
@@ -557,7 +559,7 @@
 
   <footer>
     <div class="container">
-      <a href="index.html" class="footer__logo">OGUGADSGN</a>
+      <a href="/" class="footer__logo">OGUGADSGN</a>
       <p class="footer__copy" data-i18n="footer_copy">© 2025 Gustavo Dias de Jesus. Todos os direitos reservados.</p>
     </div>
   </footer>
@@ -643,7 +645,10 @@
     });
 
     (async function () {
+      // /nome-do-projeto é reescrito pelo .htaccess pra post.html?slug=nome-do-projeto.
+      // Link antigo (post.html?id=uuid) continua funcionando pra não quebrar o que já foi compartilhado.
       const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
       const id = params.get('id');
       const loadingState = document.getElementById('loadingState');
       const notFoundState = document.getElementById('notFoundState');
@@ -654,17 +659,15 @@
         notFoundState.classList.remove('hidden');
       }
 
-      if (!id || !window.supabase || !SUPABASE_URL || SUPABASE_URL.indexOf('COLE_AQUI') === 0) {
+      if ((!slug && !id) || !window.supabase || !SUPABASE_URL || SUPABASE_URL.indexOf('COLE_AQUI') === 0) {
         showNotFound();
         return;
       }
 
       const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      const { data: post, error } = await sb
-        .from('posts')
-        .select('*')
-        .eq('id', id)
-        .maybeSingle();
+      let postQuery = sb.from('posts').select('*');
+      postQuery = slug ? postQuery.eq('slug', slug) : postQuery.eq('id', id);
+      const { data: post, error } = await postQuery.maybeSingle();
 
       if (error || !post) {
         showNotFound();
@@ -672,6 +675,36 @@
       }
 
       document.title = post.title + ' — OGUGADSGN';
+
+      const postUrl = 'https://ogugadsgn.com.br/' + encodeURIComponent(post.slug || post.id);
+      const postDesc = (post.text || post.title).slice(0, 160);
+
+      const canonicalLink = document.createElement('link');
+      canonicalLink.rel = 'canonical';
+      canonicalLink.href = postUrl;
+      document.head.appendChild(canonicalLink);
+
+      const metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      metaDesc.content = postDesc;
+      document.head.appendChild(metaDesc);
+      [
+        ['property', 'og:type', 'article'],
+        ['property', 'og:url', postUrl],
+        ['property', 'og:title', post.title + ' — OGUGADSGN'],
+        ['property', 'og:description', postDesc],
+        ['property', 'og:image', post.image_url],
+        ['name', 'twitter:card', 'summary_large_image'],
+        ['name', 'twitter:title', post.title + ' — OGUGADSGN'],
+        ['name', 'twitter:description', postDesc],
+        ['name', 'twitter:image', post.image_url]
+      ].forEach(function (tag) {
+        const el = document.createElement('meta');
+        el.setAttribute(tag[0], tag[1]);
+        el.setAttribute('content', tag[2]);
+        document.head.appendChild(el);
+      });
+
       document.getElementById('postImage').src = post.image_url;
       document.getElementById('postImage').alt = post.title;
       document.getElementById('postImage').addEventListener('click', function () {

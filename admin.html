@@ -272,7 +272,7 @@
   <div class="container">
     <header>
       <span style="font-weight:700; letter-spacing:-0.04em;">OGUGADSGN</span>
-      <a href="index.html">← Voltar pro site</a>
+      <a href="/">← Voltar pro site</a>
     </header>
 
     <!-- ===== LOGIN ===== -->
@@ -303,6 +303,10 @@
         <form id="postForm">
           <label for="postTitle">Título</label>
           <input type="text" id="postTitle" required placeholder="Ex: Landing Page Studio X">
+
+          <label for="postSlug">URL do projeto</label>
+          <input type="text" id="postSlug" placeholder="gerada automático a partir do título">
+          <div class="form-hint">É o link do projeto: ogugadsgn.com.br/<span id="postSlugPreview">assim</span></div>
 
           <label for="postText">Texto (aparece completo na página do projeto)</label>
           <textarea id="postText" placeholder="Conte sobre o projeto"></textarea>
@@ -360,6 +364,49 @@
     const coverPreviewImg = document.getElementById('coverPreviewImg');
     const postBodyImages = document.getElementById('postBodyImages');
     const bodyImagesGrid = document.getElementById('bodyImagesGrid');
+    const postTitleInput = document.getElementById('postTitle');
+    const postSlugInput = document.getElementById('postSlug');
+    const postSlugPreview = document.getElementById('postSlugPreview');
+
+    function slugify(str) {
+      return (str || '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    function updateSlugPreview() {
+      postSlugPreview.textContent = slugify(postSlugInput.value) || 'assim';
+    }
+
+    let slugManuallyEdited = false;
+    postTitleInput.addEventListener('input', function () {
+      if (!slugManuallyEdited) {
+        postSlugInput.value = slugify(postTitleInput.value);
+        updateSlugPreview();
+      }
+    });
+    postSlugInput.addEventListener('input', function () {
+      slugManuallyEdited = true;
+      updateSlugPreview();
+    });
+
+    async function getUniqueSlug(baseSlug, excludeId) {
+      let candidate = baseSlug || 'projeto';
+      let n = 2;
+      while (true) {
+        let query = sb.from('posts').select('id').eq('slug', candidate).limit(1);
+        if (excludeId) query = query.neq('id', excludeId);
+        const { data } = await query;
+        if (!data || !data.length) return candidate;
+        candidate = baseSlug + '-' + n;
+        n++;
+      }
+    }
 
     function showMsg(el, text, type) {
       el.textContent = text;
@@ -479,6 +526,8 @@
       postForm.reset();
       setCoverPreview(null);
       renderBodyImages();
+      slugManuallyEdited = false;
+      updateSlugPreview();
       formTitle.textContent = 'Novo post';
       formSubtitle.textContent = 'Adiciona um card novo na grade de portfólio do site.';
       postBtn.textContent = 'Publicar';
@@ -499,6 +548,9 @@
       document.getElementById('postTags').value = (post.tags || []).join(', ');
       document.getElementById('postClient').value = post.client || '';
       document.getElementById('postDate').value = post.project_date || '';
+      postSlugInput.value = post.slug || '';
+      slugManuallyEdited = true;
+      updateSlugPreview();
       postCoverImage.value = '';
       setCoverPreview(post.image_url);
       renderBodyImages();
@@ -604,7 +656,13 @@
         const client = document.getElementById('postClient').value.trim();
         const projectDate = document.getElementById('postDate').value.trim();
 
+        if (!title) throw new Error('Preencha o título.');
         if (!editingId && !coverFile) throw new Error('Selecione uma imagem de capa.');
+
+        const baseSlug = slugify(postSlugInput.value) || slugify(title);
+        const slug = await getUniqueSlug(baseSlug, editingId);
+        postSlugInput.value = slug;
+        updateSlugPreview();
 
         const coverUrl = coverFile ? await uploadImage(coverFile) : editingExistingCoverUrl;
 
@@ -615,6 +673,7 @@
 
         const payload = {
           title: title,
+          slug: slug,
           text: text,
           tags: tags,
           client: client || null,

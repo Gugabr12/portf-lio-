@@ -46,7 +46,7 @@ async function getAllProjects() {
             title: p.title,
             tags: p.tags && p.tags.length ? p.tags : ['Projeto'],
             image: p.image_url,
-            link: 'post.html?id=' + encodeURIComponent(p.id),
+            link: '/' + encodeURIComponent(p.slug || p.id),
             external: false
           };
         });

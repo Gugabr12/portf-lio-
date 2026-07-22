@@ -1,0 +1,17 @@
+# URLs limpas: /projetos em vez de /projetos.html, /nome-do-projeto em vez de post.html?id=...
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # se já existe um arquivo ou pasta com esse nome, usa ele direto (não mexe)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # páginas fixas sem .html
+  RewriteRule ^projetos/?$ projetos.html [L]
+  RewriteRule ^admin/?$ admin.html [L]
+
+  # qualquer outra coisa vira a URL de um projeto (post.html?slug=...)
+  RewriteRule ^([a-z0-9-]+)/?$ post.html?slug=$1 [L,QSA]
+</IfModule>
